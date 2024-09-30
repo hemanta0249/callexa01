@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'
 
 const Home = (e) => {
-    const [code, setCode] = useState("");
+    const [code, setCode] = useState("1");
     const [room1, setRoom1] = useState("");
     const [room2, setRoom2] = useState("");
     // const [arr, setArr] = useState([]);
