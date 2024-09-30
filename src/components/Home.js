@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'
 
 const Home = (e) => {
-    const [code, setCode] = useState("1");
+    const [code, setCode] = useState("");
     const [room1, setRoom1] = useState("");
     const [room2, setRoom2] = useState("");
     // const [arr, setArr] = useState([]);
@@ -56,7 +56,7 @@ const Home = (e) => {
     }
 
     const urgent = async ()=>{
-        const response = await fetch("http://localhost:8000/api/auth/getuser",{
+        const response = await fetch("/api/auth/getuser",{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

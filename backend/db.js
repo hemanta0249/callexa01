@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoURI = "mongodb://localhost:27017/callexa";
+const mongoURI = "mongodb+srv://hemantarora028:crest%40123@cluster0.d9hx2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const connectToMongo = ()=>{
     mongoose.connect(mongoURI);
