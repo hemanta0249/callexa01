@@ -15,15 +15,19 @@ app.use(express.json());
 app.use(cors());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../build')));
+// app.use(express.static(path.join(__dirname, '../build')));
 
 // API routes
 app.use('/api/auth', require('./routes/auth'));
 
+app.get('/', (req, res) => {
+    res.send("hello world");
+})
+
 // The "catchall" handler: for any request that doesn't match one above, send back index.html.
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../build/index.html'));
-});
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../build/index.html'));
+// });
 
 // Socket.io setup
 const server = app.listen(port, () => {
