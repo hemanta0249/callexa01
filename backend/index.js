@@ -1,10 +1,10 @@
 const express = require("express");
-const connectToMongo = require('./db');
+// const connectToMongo = require('./db');
 const { Server } = require("socket.io");
 const cors = require('cors');
 const path = require('path');
 
-connectToMongo();
+// connectToMongo();
 
 const app = express();
 const io = new Server();
@@ -14,20 +14,16 @@ const port = process.env.PORT || 8000; // Use environment variable for port
 app.use(express.json());
 app.use(cors());
 
-// Serve static files from the React app
-// app.use(express.static(path.join(__dirname, '../build')));
-
 // API routes
 app.use('/api/auth', require('./routes/auth'));
 
-app.get('/', (req, res) => {
-    res.send("hello world");
-})
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../build')));
 
 // The "catchall" handler: for any request that doesn't match one above, send back index.html.
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../build/index.html'));
-// });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build/index.html'));
+});
 
 // Socket.io setup
 const server = app.listen(port, () => {
