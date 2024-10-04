@@ -63,9 +63,9 @@ const HomeMain = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify()
+            body: JSON.stringify(signInForm)
         })
-        const json = await response.json(signInForm);
+        const json = await response.json();
 
         if (json.success) {
             localStorage.setItem('token', json.authToken);
