@@ -1,18 +1,24 @@
 const express = require("express");
-// const connectToMongo = require('./db');
+const http = require('http');
 const { Server } = require("socket.io");
 const cors = require('cors');
 const path = require('path');
+// const connectToMongo = require('./db');
 
 // connectToMongo();
-
 const app = express();
-const io = new Server();
-
 const port = process.env.PORT || 8000; // Use environment variable for port
 
 app.use(express.json());
 app.use(cors());
+
+// Create an HTTP server
+const server = http.createServer(app);
+
+// Attach Socket.IO to the server
+const io = new Server(server, {
+    cors: true
+});
 
 // API routes
 app.use('/api/auth', require('./routes/auth'));
@@ -26,9 +32,6 @@ app.get('*', (req, res) => {
 });
 
 // Socket.io setup
-const server = app.listen(port, () => {
-    console.log(`Running on port ${port}`);
-});
 
 const ETS = new Map();
 const STE = new Map();
@@ -40,9 +43,14 @@ io.on("connection", (socket) =>{
         console.log(room);
         // ETS.set(email, socket.id);
         // STE.set(socket.id, email);
-        io.to(room).emit("user-joined", {id: socket.id});
-        socket.join(room);
-        io.to(socket.id).emit("joined-room", data);
+        
+        // io.to(room).emit("user-joined", {id: socket.id});
+        // socket.join(room);
+        // io.to(socket.id).emit("joined-room", data);
+        socket.join(room, () => {
+            io.to(room).emit("user-joined", { id: socket.id });
+            io.to(socket.id).emit("joined-room", data);
+        });
     })
 
     socket.on("call-user", (data)=>{
@@ -66,4 +74,6 @@ io.on("connection", (socket) =>{
     })
 })
 
-io.attach(server);
+server.listen(port, () => {
+    console.log(`Running on port ${port}`);
+});

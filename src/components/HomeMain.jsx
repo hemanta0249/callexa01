@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const HomeMain = () => {
+    const navigate = useNavigate();
     // State for form switching
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
 
@@ -30,15 +33,48 @@ const HomeMain = () => {
     };
 
     // Handle Sign Up form submission
-    const handleSignUpSubmit = (e) => {
+    const handleSignUpSubmit = async (e) => {
         e.preventDefault();
         console.log('Sign Up form data:', signUpForm);
+        const response = await fetch("/api/auth/createusers", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(signUpForm)
+        })
+        const json = await response.json();
+        console.log(json);
+        if (json.success) {
+            toast.success("You're registered successfully");
+        }
+        else {
+            toast.error("something went wrong");
+        }
     };
 
     // Handle Sign In form submission
-    const handleSignInSubmit = (e) => {
+    const handleSignInSubmit = async (e) => {
         e.preventDefault();
         console.log('Sign In form data:', signInForm);
+
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify()
+        })
+        const json = await response.json(signInForm);
+
+        if (json.success) {
+            localStorage.setItem('token', json.authToken);
+            navigate('/home');
+        }
+        else {
+            toast.error("invalid cridentials");
+        }
+
     };
 
     // Toggle between sign-up and sign-in
@@ -52,92 +88,78 @@ const HomeMain = () => {
 
     return (
         <div>
-            <h2>Weekly Coding Challenge #1: Sign in/up Form</h2>
-            <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
-                <div className="form-container sign-up-container">
-                    <form onSubmit={handleSignUpSubmit}>
-                        <h1>Create Account</h1>
-                        <div className="social-container">
-                            <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-                            <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-                            <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
-                        </div>
-                        <span>or use your email for registration</span>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Name"
-                            value={signUpForm.name}
-                            onChange={handleSignUpChange}
-                        />
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={signUpForm.email}
-                            onChange={handleSignUpChange}
-                        />
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={signUpForm.password}
-                            onChange={handleSignUpChange}
-                        />
-                        <button type="submit">Sign Up</button>
-                    </form>
-                </div>
-                <div className="form-container sign-in-container">
-                    <form onSubmit={handleSignInSubmit}>
-                        <h1>Sign in</h1>
-                        <div className="social-container">
-                            <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-                            <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-                            <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
-                        </div>
-                        <span>or use your account</span>
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={signInForm.email}
-                            onChange={handleSignInChange}
-                        />
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={signInForm.password}
-                            onChange={handleSignInChange}
-                        />
-                        <a href="#">Forgot your password?</a>
-                        <button type="submit">Sign In</button>
-                    </form>
-                </div>
-                <div className="overlay-container">
-                    <div className="overlay">
-                        <div className="overlay-panel overlay-left">
-                            <h1>Welcome Back!</h1>
-                            <p>To keep connected with us please login with your personal info</p>
-                            <button className="ghost" onClick={handleSignInClick} id="signIn">Sign In</button>
-                        </div>
-                        <div className="overlay-panel overlay-right">
-                            <h1>Hello, Friend!</h1>
-                            <p>Enter your personal details and start your journey with us</p>
-                            <button className="ghost" onClick={handleSignUpClick} id="signUp">Sign Up</button>
+            <ToastContainer />
+
+            <div style={{ padding: "0 1rem", width: "100vw" }}>
+                <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} id="container">
+
+                    <button className="ghost ghostbtn1 d-md-none d-block" onClick={handleSignUpClick} id="signUp">Sign Up</button>
+                    <button className="ghost ghostbtn2 d-md-none d-block" onClick={handleSignInClick} id="signIn">Sign In</button>
+
+                    <div className="form-container sign-up-container">
+                        <form onSubmit={handleSignUpSubmit}>
+                            <h1>Create Account</h1>
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Name"
+                                value={signUpForm.name}
+                                onChange={handleSignUpChange}
+                            />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={signUpForm.email}
+                                onChange={handleSignUpChange}
+                            />
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                value={signUpForm.password}
+                                onChange={handleSignUpChange}
+                            />
+                            <button type="submit">Sign Up</button>
+                        </form>
+                    </div>
+                    <div className="form-container sign-in-container">
+                        <form onSubmit={handleSignInSubmit}>
+                            <h1>Sign in</h1>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                value={signInForm.email}
+                                onChange={handleSignInChange}
+                            />
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                value={signInForm.password}
+                                onChange={handleSignInChange}
+                            />
+                            <a href="#">Forgot your password?</a>
+                            <button type="submit">Sign In</button>
+                        </form>
+                    </div>
+                    <div className="overlay-container d-md-block d-none">
+                        <div className="overlay">
+                            <div className="overlay-panel overlay-left">
+                                <h1>Welcome Back!</h1>
+                                <p>To keep connected with us please login with your personal info</p>
+                                <button className="ghost" onClick={handleSignInClick} id="signIn">Sign In</button>
+                            </div>
+                            <div className="overlay-panel overlay-right">
+                                <h1>Hello, Friend!</h1>
+                                <p>Enter your personal details and start your journey with us</p>
+                                <button className="ghost" onClick={handleSignUpClick} id="signUp">Sign Up</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <footer>
-                <p>
-                    Created with <i className="fa fa-heart"></i> by
-                    <a target="_blank" href="https://florin-pop.com">Florin Pop</a>
-                    - Read how I created this and how you can join the challenge
-                    <a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
-                </p>
-            </footer>
         </div>
     );
 };

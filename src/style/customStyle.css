@@ -96,8 +96,8 @@ input {
 			0 10px 10px rgba(0,0,0,0.22);
 	position: relative;
 	overflow: hidden;
-	/* width: 768px; */
-	/* max-width: 100%; */
+	width: 768px;
+	max-width: 100%;
 	min-height: 480px;
 }
 
@@ -249,4 +249,64 @@ footer i {
 footer a {
     color: #3c97bf;
     text-decoration: none;
+}
+
+.ghostbtn1{
+	position: absolute;
+    opacity: 1;
+    background-color: #FF416C !important;
+    z-index: 400;
+    top: 10px;
+    right: -20px;
+}
+
+.ghostbtn2{
+	position: absolute;
+    opacity: 1;
+    background-color: #FF416C !important;
+    z-index: 400;
+    top: 10px;
+    left: -20px;
+}
+
+
+@media (max-width:767px) {
+	.sign-in-container {
+		left: 0;
+		width: 100%;
+		z-index: 2;
+	}
+	.sign-up-container {
+		left: 0;
+		width: 100%;
+		opacity: 1;
+		z-index: 1;
+		transform: translateX(100%);
+	}
+
+	.container.right-panel-active .sign-in-container {
+		transform: translateX(-100%);
+	}
+
+	.container.right-panel-active .sign-up-container {
+		transform: translateX(0%);
+		opacity: 1;
+		z-index: 5;
+		animation: show 0.6s;
+	}
+
+	.ghostbtn1{
+		display: block !important;
+	}
+	.ghostbtn2{
+		display: none !important;
+	}
+
+	.container.right-panel-active .ghostbtn1{
+		display: none !important;
+	}
+	.container.right-panel-active .ghostbtn2{
+		display: block !important;
+	}
+
 }

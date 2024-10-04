@@ -1,5 +1,6 @@
 import './App.css';
 import './style/customStyle.css';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   HashRouter,
   Routes,
@@ -24,11 +25,12 @@ function App() {
          <HashRouter>
 
           <Routes>
+            <Route path="/" element={<HomeMain />} />
             <Route path="/home" element={<Home/>} />
-            <Route path="/" element={<Home2/>} />
             <Route path="/room/:roomId" element={<Room />} />
-            <Route path="/signup" element={<Home3 />} />
-            <Route path="/main" element={<HomeMain />} />
+
+            {/* <Route path="/" element={<Home2/>} /> */}
+            {/* <Route path="/signup" element={<Home3 />} /> */}
 
           </Routes>
 
