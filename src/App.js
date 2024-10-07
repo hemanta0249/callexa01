@@ -1,8 +1,8 @@
 import './App.css';
-// import './style/customStyle.css';
-import 'react-toastify/dist/ReactToastify.css';
+import './style/customStyle.css';
+// import 'react-toastify/dist/ReactToastify.css';
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route
 } from "react-router-dom";
@@ -22,7 +22,7 @@ function App() {
     <div>
       <SocketState>
         <PeerState>
-         <BrowserRouter>
+         <HashRouter>
 
           <Routes>
             {/* <Route path="/" element={<HomeMain />} /> */}
@@ -34,7 +34,7 @@ function App() {
 
           </Routes>
 
-        </BrowserRouter>
+        </HashRouter>
         </PeerState>
       </SocketState>
       </div>
