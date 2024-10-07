@@ -43,9 +43,15 @@ io.on("connection", (socket) =>{
         console.log(room);
         // ETS.set(email, socket.id);
         // STE.set(socket.id, email);
+        
         io.to(room).emit("user-joined", {id: socket.id});
         socket.join(room);
         io.to(socket.id).emit("joined-room", data);
+        // socket.join(room, () => {
+        //     console.log("joining");
+        //     io.to(room).emit("user-joined", { id: socket.id });
+        //     io.to(socket.id).emit("joined-room", data);
+        // });
     })
 
     socket.on("call-user", (data)=>{
