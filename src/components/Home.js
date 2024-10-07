@@ -123,6 +123,7 @@ const Home = (e) => {
 
     const handleRoomJoined = useCallback((data) =>{
         const {room} = data;
+        console.log("something");
         navigate(`/room/${room}`);
     },[navigate])
 
