@@ -16,7 +16,7 @@ app.use(cors());
 const server = http.createServer(app);
 
 // Attach Socket.IO to the server
-const io = new Server(server, {
+const io = new Server({
     cors: true
 });
 
@@ -77,3 +77,5 @@ io.on("connection", (socket) =>{
 server.listen(port, () => {
     console.log(`Running on port ${port}`);
 });
+
+io.attach(server);
