@@ -25,12 +25,12 @@ function App() {
          <BrowserRouter>
 
           <Routes>
-            <Route path="/main " element={<HomeMain />} />
+            <Route path="/" element={<HomeMain />} />
             <Route path="/home" element={<Home/>} />
             <Route path="/room/:roomId" element={<Room />} />
 
-            <Route path="/" element={<Home2/>} />
-            <Route path="/signup" element={<Home3 />} />
+            {/* <Route path="/" element={<Home2/>} /> */}
+            {/* <Route path="/signup" element={<Home3 />} /> */}
 
           </Routes>
 

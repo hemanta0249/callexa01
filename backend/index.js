@@ -7,7 +7,7 @@ const path = require('path');
 
 // connectToMongo();
 const app = express();
-const port = process.env.PORT || 8000; // Use environment variable for port
+const port = process.env.PORT || 3000; // Use environment variable for port
 
 app.use(express.json());
 app.use(cors());
@@ -43,15 +43,9 @@ io.on("connection", (socket) =>{
         console.log(room);
         // ETS.set(email, socket.id);
         // STE.set(socket.id, email);
-        
-        // io.to(room).emit("user-joined", {id: socket.id});
-        // socket.join(room);
-        // io.to(socket.id).emit("joined-room", data);
-        socket.join(room, () => {
-            console.log("joining");
-            io.to(room).emit("user-joined", { id: socket.id });
-            io.to(socket.id).emit("joined-room", data);
-        });
+        io.to(room).emit("user-joined", {id: socket.id});
+        socket.join(room);
+        io.to(socket.id).emit("joined-room", data);
     })
 
     socket.on("call-user", (data)=>{
