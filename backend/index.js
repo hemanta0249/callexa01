@@ -7,18 +7,12 @@ const path = require('path');
 
 // connectToMongo();
 const app = express();
+const io = new Server();
+
 const port = process.env.PORT || 8000; // Use environment variable for port
 
 app.use(express.json());
 app.use(cors());
-
-// Create an HTTP server
-const server = http.createServer(app);
-
-// Attach Socket.IO to the server
-const io = new Server({
-    cors: true
-});
 
 // API routes
 app.use('/api/auth', require('./routes/auth'));
@@ -74,8 +68,10 @@ io.on("connection", (socket) =>{
     })
 })
 
-server.listen(port, () => {
-    console.log(`Running on port ${port}`);
-});
+app.listen(port,()=>{
+    console.log(`running on the port ${port}`);
+})
 
-io.attach(server);
+io.listen(8080,{
+    cors : true
+});
