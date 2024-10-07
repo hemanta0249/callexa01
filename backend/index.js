@@ -8,9 +8,7 @@ const path = require('path');
 // connectToMongo();
 const app = express();
 const server = http.createServer(app); // Create HTTP server
-const io = new Server(server, {
-    cors: true
-});
+const io = new Server();
 
 const port = process.env.PORT || 8000; // Use environment variable for port
 
@@ -66,3 +64,5 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
     console.log(`running on the port ${port}`);
 });
+
+io.attach(server)
