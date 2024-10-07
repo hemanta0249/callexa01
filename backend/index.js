@@ -9,10 +9,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app); // Create HTTP server
 const io = new Server(server, {
-    cors: {
-        origin: "*", // Adjust this as necessary for your setup
-        methods: ["GET", "POST"],
-    },
+    cors: true
 });
 
 const port = process.env.PORT || 8000; // Use environment variable for port
