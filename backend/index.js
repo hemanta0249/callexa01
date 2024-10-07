@@ -1,6 +1,6 @@
 const express = require("express");
 const http = require('http');
-const { Server } = require("socket.io");
+const socketIo = require("socket.io");
 const cors = require('cors');
 const path = require('path');
 // const connectToMongo = require('./db');
@@ -8,7 +8,9 @@ const path = require('path');
 // connectToMongo();
 const app = express();
 const server = http.createServer(app); // Create HTTP server
-const io = new Server();
+const io = socketIo(server, {
+    cors: true
+});
 
 const port = process.env.PORT || 8000; // Use environment variable for port
 
