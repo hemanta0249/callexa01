@@ -72,6 +72,6 @@ app.listen(port,()=>{
     console.log(`running on the port ${port}`);
 })
 
-io.listen(8080,{
+io.listen(port,{
     cors : true
 });
