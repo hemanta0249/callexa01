@@ -1,5 +1,5 @@
 import './App.css';
-// import './style/customStyle.css';
+import './style/customStyle.css';
 import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter,
