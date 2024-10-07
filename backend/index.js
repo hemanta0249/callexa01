@@ -48,6 +48,7 @@ io.on("connection", (socket) =>{
         // socket.join(room);
         // io.to(socket.id).emit("joined-room", data);
         socket.join(room, () => {
+            console.log("joining");
             io.to(room).emit("user-joined", { id: socket.id });
             io.to(socket.id).emit("joined-room", data);
         });
