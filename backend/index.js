@@ -7,7 +7,13 @@ const path = require('path');
 
 // connectToMongo();
 const app = express();
-const io = new Server();
+const server = http.createServer(app); // Create HTTP server
+const io = new Server(server, {
+    cors: {
+        origin: "*", // Adjust this as necessary for your setup
+        methods: ["GET", "POST"],
+    },
+});
 
 const port = process.env.PORT || 8000; // Use environment variable for port
 
@@ -26,52 +32,40 @@ app.get('*', (req, res) => {
 });
 
 // Socket.io setup
-
 const ETS = new Map();
 const STE = new Map();
 
-io.on("connection", (socket) =>{
-    socket.on("join-room", (data)=>{
-        console.log(data);
-        const {room} = data;
-        console.log(room);
-        // ETS.set(email, socket.id);
-        // STE.set(socket.id, email);
-        
-        // io.to(room).emit("user-joined", {id: socket.id});
-        // socket.join(room);
-        // io.to(socket.id).emit("joined-room", data);
+io.on("connection", (socket) => {
+    socket.on("join-room", (data) => {
+        const { room } = data;
         socket.join(room, () => {
             io.to(room).emit("user-joined", { id: socket.id });
             io.to(socket.id).emit("joined-room", data);
         });
-    })
+    });
 
-    socket.on("call-user", (data)=>{
-        const {to, offer} = data;
-        io.to(to).emit('incoming-call', {from: socket.id, offer});
-    })
+    socket.on("call-user", (data) => {
+        const { to, offer } = data;
+        io.to(to).emit('incoming-call', { from: socket.id, offer });
+    });
 
-    socket.on("call-accepted", (data)=>{
-        const {to, ans} = data;
-        io.to(to).emit("call-accepted", {from: socket.id, ans});
-    })
+    socket.on("call-accepted", (data) => {
+        const { to, ans } = data;
+        io.to(to).emit("call-accepted", { from: socket.id, ans });
+    });
 
-    socket.on("nego-needed", (data)=>{
-        const {offer, to} = data;
-        io.to(to).emit("nego-needed", {from: socket.id, offer})
-    })
+    socket.on("nego-needed", (data) => {
+        const { offer, to } = data;
+        io.to(to).emit("nego-needed", { from: socket.id, offer });
+    });
 
-    socket.on("nego-done", (data)=>{
-        const {to, ans} = data;
-        io.to(to).emit("nego-final", {from: socket.id, ans});
-    })
-})
+    socket.on("nego-done", (data) => {
+        const { to, ans } = data;
+        io.to(to).emit("nego-final", { from: socket.id, ans });
+    });
+});
 
-app.listen(port,()=>{
+// Start the server
+server.listen(port, () => {
     console.log(`running on the port ${port}`);
-})
-
-io.listen(8080,{
-    cors : true
 });
